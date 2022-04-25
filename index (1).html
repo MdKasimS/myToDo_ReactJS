@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <script>
+        let taskCounter = 0;
+        let dataDict = [];
+
+        function addToDoTest(elementType) {
+            console.log("Here I am ....");
+            let atNode = document.getElementById("addedTasks");      //where to add
+            var tempEleLi = document.createElement(elementType);     //what type of
+            //what inside this type
+            //set attributes
+            var taskStr = document.getElementById("task_input");    //data source
+            //data source and data validation
+            tempEleLi.innerText = taskStr.value;                    //data sink
+
+            atNode.appendChild(tempEleLi);                          //append all 
+            clearTaskInput("task_input");                           //what after appending
+
+            return `Task added ${taskStr.value}`;                   //report operation status
+        }
+
+        function addToDo() {
+            // console.log("Here I am ....");
+            var taskStr = document.getElementById("task_input");
+            if (taskStr.value !== "") {
+                let atNode = document.getElementById("addedTasks");
+
+                var EleLi = document.createElement("li");
+                var EleDiv = document.createElement("div");
+                var ckbox = document.createElement("input");
+                var rmButton = document.createElement("input");
+
+
+                atNode.appendChild(EleDiv);
+                EleDiv.setAttribute("id", `taskdiv_${taskCounter}`);
+
+                EleDiv.appendChild(ckbox);
+                ckbox.setAttribute("type", "checkbox");
+                ckbox.setAttribute("id", `ckbox_${taskCounter}`);
+                ckbox.setAttribute("onclick", "handleChbox(this.id);");
+
+                EleDiv.appendChild(EleLi);
+                // EleLi.innerText = taskStr.value;
+                EleLi.innerHTML = `<h3>${taskStr.value}</h3>`;
+                EleLi.setAttribute("id", `taskli_${taskCounter}`);
+
+                EleDiv.appendChild(rmButton);
+                rmButton.setAttribute("type", "button");
+                rmButton.setAttribute("value", "Remove Task");
+                rmButton.setAttribute("id", `taskbtn_${taskCounter}`);
+                rmButton.setAttribute("onclick", "removeTask(this.id)");
+
+                clearTaskInput("task_input");
+                dataDict.push(`taskbtn_${taskCounter}`);
+                ++taskCounter;
+
+                // return `Task added ${taskStr.value} by addToDoTest()`+`taskdiv_${taskCounter-1}` + "---"+ dataDict;
+                // return `Task added ${taskStr.value} by addToDoTest() ` + dataDict;
+                console.log("Task Added Successfully");
+            }
+            else {
+                alert("Please enter the task");
+                // return "Nothing to add";
+            }
+        }
+
+        function clearTaskInput(fieldId) {
+            document.getElementById(fieldId).value = "";
+            // console.log("Cleared Text Field");
+        }
+
+        function removeTask(idRecieved) {
+            // console.log(idRecieved);
+            let list = document.getElementById("addedTasks");
+
+            // console.log("B4 removal ", dataDict)
+            list.removeChild(list.children[dataDict.indexOf(idRecieved)]);
+
+            dataDict.splice(dataDict.indexOf(idRecieved), 1);
+            // console.log(dataDict);
+
+            console.log("Task Deleted Successfully");
+        }
+
+        function handleChbox(idRecieved) {
+            if (document.getElementById(idRecieved).checked)
+                alert(`Task Completed for ${idRecieved}`);
+            else
+                alert(`Task ${idRecieved} unchecked`);
+            console.log(idRecieved);
+        }
+
+        function getAllElements() {
+            for (i = 0; i < 5; ++i) {
+                let elementsInside = document.getElementById(`taskdiv_${i}`);
+                console.log(elementsInside);
+
+            }
+        }
+    </script>
+
+    <style>
+        #liInToDo
+		{
+			display:inline;
+		}
+
+
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <h1 id="appName"> Microsoft ToDo For Softlink Global</h1>
+        v1.0_smke
+    </header>
+
+    <div class="todo_console">
+        <div id="header">
+            <h3> Enter Task</h3>
+            <input id="task_input" type="text" placeholder="Enter your task" />
+            <input id="add_task" type="button" value="Add Task" onClick="addToDo();" />
+        </div>
+
+        <div id="viewList">
+            <ol id="addedTasks">
+                <div id="liInToDo">     
+    				<input id="taskCheckbox" type="checkbox" onclick="handleChbox(`${this.id}`)">
+    				<li id="testLiID"><h3>Arbitrary Task <h3></h3></li>
+    				<input type="button" value="Remove" onclick="dataDict.push(this.id);removeTask(this.id);" > 
+				</div>
+            </ol>
+        </div>
+
+		<div id="like_button_container">
+        	<h3>Test Button <input type="button" value="Test Div elements" onclick="getAllElements()"></h3>
+		</div>
+	</div>
+
+
+    <!-- <script> alert("page loaded")</script> -->
+	<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+	<!-- <script src="like_button.js"></script> -->
+</body>
+
+</html>
+
+<!--Demo Item For Test-->
+<!-- <div>     
+    <input id="taskCheckbox" type="checkbox" onclick="handleChbox(`${this.id}`)">
+    <li id="testLiID"><h3>Arbitrary Task <h3></h3></li>
+    <input type="button" value="Remove" onclick="dataDict.push(this.id);removeTask(this.id);"> 
+</div> -->
